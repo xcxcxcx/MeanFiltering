@@ -4,13 +4,12 @@
 using namespace cv;
 using namespace std;
 
-//¾ùÖµÂË²¨
+//å‡å€¼æ»¤æ³¢
 void MeanFiltering(const Mat &src, Mat &dst) {
-	if (!src.data) return;
-	//at·ÃÎÊÏñËØµã
+	if (!src.data) return;  //è‹¥æ²¡æœ‰æ•°æ®åˆ™è¿”å›
 	for (int i = 1; i<src.rows; ++i)
 		for (int j = 1; j < src.cols; ++j) {
-			if ((i - 1 >= 0) && (j - 1) >= 0 && (i + 1)<src.rows && (j + 1)<src.cols) {//±ßÔµ²»½øĞĞ´¦Àí
+			if ((i - 1 >= 0) && (j - 1) >= 0 && (i + 1)<src.rows && (j + 1)<src.cols) {//è¾¹ç¼˜ä¸è¿›è¡Œå¤„ç†
 				dst.at<Vec3b>(i, j)[0] = (src.at<Vec3b>(i, j)[0] + src.at<Vec3b>(i - 1, j - 1)[0] + src.at<Vec3b>(i - 1, j)[0] + src.at<Vec3b>(i, j - 1)[0] +
 					src.at<Vec3b>(i - 1, j + 1)[0] + src.at<Vec3b>(i + 1, j - 1)[0] + src.at<Vec3b>(i + 1, j + 1)[0] + src.at<Vec3b>(i, j + 1)[0] +
 					src.at<Vec3b>(i + 1, j)[0]) / 9;
@@ -21,16 +20,16 @@ void MeanFiltering(const Mat &src, Mat &dst) {
 					src.at<Vec3b>(i - 1, j + 1)[2] + src.at<Vec3b>(i + 1, j - 1)[2] + src.at<Vec3b>(i + 1, j + 1)[2] + src.at<Vec3b>(i, j + 1)[2] +
 					src.at<Vec3b>(i + 1, j)[2]) / 9;
 			}
-			else {//±ßÔµ¸³Öµ
+			else {//ç»™å›¾åƒçš„è¾¹ç¼˜èµ‹å€¼
 				dst.at<Vec3b>(i, j)[0] = src.at<Vec3b>(i, j)[0];
 				dst.at<Vec3b>(i, j)[1] = src.at<Vec3b>(i, j)[1];
 				dst.at<Vec3b>(i, j)[2] = src.at<Vec3b>(i, j)[2];
 			}
 		}
 }
-//Í¼Ïñ½·ÑÎ»¯
+//å›¾åƒæ¤’ç›åŒ–
 void salt(Mat &image, int num) {
-	if (!image.data) return;//·ÀÖ¹´«Èë¿ÕÍ¼
+	if (!image.data) return;//é˜²æ­¢ä¼ å…¥ç©ºå›¾
 	int i, j;
 	srand(time(NULL));
 	for (int x = 0; x < num; ++x) {
@@ -42,7 +41,7 @@ void salt(Mat &image, int num) {
 	}
 }
 void main() {
-	Mat image = cv::imread("C:\\Users\\cccccc\\Desktop\\¿¨Í¨.jpg");
+	Mat image = cv::imread("C:\\Users\\cccccc\\Desktop\\å¡é€š.jpg");
 
 	Mat Salt_Image;
 	image.copyTo(Salt_Image);
@@ -51,12 +50,12 @@ void main() {
 	Mat image1(image.size(), image.type());
 	Mat image2;
 	MeanFiltering(Salt_Image, image1);
-	blur(Salt_Image, image2, Size(3, 3));//openCV¿â×Ô´øµÄ¾ùÖµÂË²¨º¯Êı
-	imshow("Ô­Í¼", image);
-	imshow("×Ô¶¨Òå¾ùÖµÂË²¨", image1);
-	imshow("openCV×Ô´øµÄ¾ùÖµÂË²¨", image2);
-	/*Mat dst0;                                        //Í¼ÏñËõ·Å
+	blur(Salt_Image, image2, Size(3, 3));//openCVåº“è‡ªå¸¦çš„å‡å€¼æ»¤æ³¢å‡½æ•°
+	imshow("åŸå›¾", image);
+	imshow("è‡ªå®šä¹‰å‡å€¼æ»¤æ³¢", image1);
+	imshow("openCVè‡ªå¸¦çš„å‡å€¼æ»¤æ³¢", image2);
+	/*Mat dst0;                                        //å›¾åƒç¼©æ”¾
 	resize(image,dst0, Size(), 1,2);
-	imshow("Ëõ·Å",dst0);*/
+	imshow("ç¼©æ”¾",dst0);*/
 	waitKey();
 }
